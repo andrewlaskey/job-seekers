@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "gen:types": "supabase gen types typescript --project-id dglgehhuwucmvsfmaogd > app/types/database.types.ts"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.1",
@@ -27,6 +28,7 @@
     "@types/react": "^19.0.2",
     "@types/react-dom": "19.0.2",
     "postcss": "8.4.49",
+    "supabase": "^2.22.6",
     "tailwind-merge": "^2.5.2",
     "tailwindcss": "3.4.17",
     "tailwindcss-animate": "^1.0.7",
