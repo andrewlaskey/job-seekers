@@ -38,7 +38,7 @@ export default async function ApplicationsPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">
                         <h3 className="text-lg font-medium text-gray-900 truncate">
-                          {application.title}
+                          <Link href={`/applications/${application.id}`}>{application.title}</Link>
                         </h3>
                         <p className="mt-1 text-sm text-gray-500">
                           {application.company}

@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/server';
 import { updateApplicationStatus } from '@/app/applications/actions';
 import { ApplicationStatus } from '@/types/applications.types';
 
-export async function createInterview(prevState: any, formData: FormData) {
+export async function createApplicationInterview(prevState: any, formData: FormData) {
   const supabase = await createClient();
   
   try {
@@ -63,8 +63,9 @@ export async function createInterview(prevState: any, formData: FormData) {
 
     await updateApplicationStatus(application_id, ApplicationStatus.INTERVIEWING);
 
-    // Revalidate the interviews list page
+    // Revalidate relevant pages
     revalidatePath('/interviews');
+    revalidatePath(`/applications/${application_id}`);
     
   } catch (error) {
     console.error('Server action error:', error);
@@ -74,5 +75,5 @@ export async function createInterview(prevState: any, formData: FormData) {
     };
   }
   
-  redirect('/interviews');
+  redirect(`/applications/${formData.get('application_id')}`);
 }

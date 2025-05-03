@@ -14,3 +14,7 @@ export function encodedRedirect(
 ) {
   return redirect(`${path}?${type}=${encodeURIComponent(message)}`);
 }
+
+export function formatDates(dbDate: string): string {
+  return new Date(dbDate).toLocaleDateString();
+}
