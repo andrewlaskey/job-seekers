@@ -4,6 +4,14 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { User } from "lucide-react";
 
 export default async function AuthButton() {
   const supabase = await createClient();
@@ -48,23 +56,40 @@ export default async function AuthButton() {
       </>
     );
   }
+  
   return user ? (
-    <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <form action={signOutAction}>
-        <Button type="submit" variant={"outline"}>
-          Sign out
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200">
+            <User className="h-5 w-5 text-slate-600" />
+          </div>
         </Button>
-      </form>
-    </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuItem asChild>
+          <Link href="/applications" className="cursor-pointer">
+            Applications
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/interviews" className="cursor-pointer">
+            Interviews
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <form action={signOutAction} className="w-full">
+            <button type="submit" className="w-full text-left">
+              Sign out
+            </button>
+          </form>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   ) : (
-    <div className="flex gap-2">
-      <Button asChild size="sm" variant={"outline"}>
-        <Link href="/sign-in">Sign in</Link>
-      </Button>
-      <Button asChild size="sm" variant={"default"}>
-        <Link href="/sign-up">Sign up</Link>
-      </Button>
-    </div>
+    <Button asChild size="sm" variant={"outline"}>
+      <Link href="/sign-in">Sign in</Link>
+    </Button>
   );
 }

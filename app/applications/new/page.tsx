@@ -3,7 +3,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createApplication } from './actions';
-import { ApplicationInsertFormData } from '@/app/types/applications.types';
+import { ApplicationInsertFormData } from '@/types/applications.types';
 
 export default function NewApplicationPage() {
   const router = useRouter();
