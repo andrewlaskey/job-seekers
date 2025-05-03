@@ -60,7 +60,7 @@ export default async function AuthButton() {
   return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full p-0">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200">
             <User className="h-5 w-5 text-slate-600" />
           </div>
