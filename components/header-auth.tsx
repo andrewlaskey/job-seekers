@@ -67,6 +67,11 @@ export default async function AuthButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuItem asChild>
+          <Link href="/dashboard" className="cursor-pointer">
+            Dashboard
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/applications" className="cursor-pointer">
             Applications
