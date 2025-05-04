@@ -28,3 +28,9 @@ export type ApplicationInsertFormData = {
     url: string;
     notes: string;
 }
+
+export type Interview = Database['public']['Tables']['interviews']['Row'];
+
+export type InterviewJoinApplications = Interview & {
+  applications: Partial<Application>;
+}

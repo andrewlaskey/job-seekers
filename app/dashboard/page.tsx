@@ -1,15 +1,19 @@
 // app/dashboard/page.tsx
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import {
   CalendarDays,
-  Building2,
   FileText,
   Plus,
   Briefcase,
 } from "lucide-react";
 import { ApplicationStatus } from "@/types/applications.types";
+import ApplicationDetail from "@/components/applications/appllication-detail";
+import { Button } from "@/components/ui/button";
+import LinkButton from "@/components/ui/link-button";
+import ArrowLink from "@/components/ui/arrow-link";
+import InterviewDetails from "@/components/interviews/interview-details";
+import H2 from "@/components/typography/h2";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -83,17 +87,12 @@ export default async function DashboardPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <CalendarDays className="h-6 w-6 text-old_rose mr-2" />
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Upcoming Interviews
-              </h2>
+              <H2>Upcoming Interviews</H2>
             </div>
-            <Link
-              href="/interviews/new"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
-            >
+            <LinkButton href="/interviews/new">
               <Plus className="h-4 w-4 mr-2" />
               Add Interview
-            </Link>
+            </LinkButton>
           </div>
 
           {upcomingInterviews.length > 0 ? (
@@ -105,60 +104,11 @@ export default async function DashboardPage() {
               </p>
               <div className="space-y-4">
                 {upcomingInterviews.map((interview) => (
-                  <div
-                    key={interview.id}
-                    className="border border-gray-200 rounded-lg p-4 hover:border-secondary transition-colors"
-                  >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">
-                          {interview.applications.title} at{" "}
-                          {interview.applications.company}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          {new Date(interview.scheduled_at).toLocaleDateString(
-                            "en-US",
-                            {
-                              weekday: "long",
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                              hour: "numeric",
-                              minute: "numeric",
-                            }
-                          )}
-                        </p>
-                        {interview.location && (
-                          <p className="text-sm text-gray-600 mt-1">
-                            Location: {interview.location}
-                          </p>
-                        )}
-                        {interview.interviewers &&
-                          interview.interviewers.length > 0 && (
-                            <p className="text-sm text-gray-600 mt-1">
-                              Interviewer
-                              {interview.interviewers.length > 1 ? "s" : ""}:{" "}
-                              {interview.interviewers.join(", ")}
-                            </p>
-                          )}
-                      </div>
-                      <Link
-                        href={`/applications/${interview.application_id}`}
-                        className="text-secondary hover:text-accent text-sm font-medium"
-                      >
-                        View Application →
-                      </Link>
-                    </div>
-                  </div>
+                  <InterviewDetails interview={interview} key={interview.id} />
                 ))}
               </div>
               <div className="flex justify-center mt-6">
-                <Link
-                  href="/interviews"
-                  className="text-secondary hover:text-accent font-medium"
-                >
-                  View All Interviews →
-                </Link>
+                <ArrowLink href="/interviews" text="View All Interviews" />
               </div>
             </>
           ) : (
@@ -173,17 +123,12 @@ export default async function DashboardPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <Briefcase className="h-6 w-6 text-old_rose mr-2" />
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Found Job Listings
-              </h2>
+              <H2>Found Job Listings</H2>
             </div>
-            <Link
-              href="/applications/new"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
+            <LinkButton href="/applications/new">
               <Plus className="h-4 w-4 mr-2" />
               Add Job Listing
-            </Link>
+            </LinkButton>
           </div>
 
           {foundApps.length > 0 ? (
@@ -194,53 +139,16 @@ export default async function DashboardPage() {
               </p>
               <div className="space-y-4">
                 {foundApps.map((application) => (
-                  <div
+                  <ApplicationDetail
+                    application={application}
                     key={application.id}
-                    className="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition-colors"
-                  >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">
-                          {application.title}
-                        </h3>
-                        <div className="flex items-center text-gray-600 mt-1">
-                          <Building2 className="h-4 w-4 mr-1" />
-                          {application.company}
-                        </div>
-                        <div className="flex items-center mt-2">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                            Found
-                          </span>
-                          <span className="ml-2 text-sm text-gray-500">
-                            Found:{" "}
-                            {new Date(
-                              application.found_at
-                            ).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Link
-                          href={application.url}
-                          className="text-primary hover:text-green-800 text-sm font-medium"
-                        >
-                          Apply Now →
-                        </Link>
-                        <Link
-                          href={`/applications/${application.id}`}
-                          className="text-secondary hover:text-accent text-sm font-medium"
-                        >
-                          View Details →
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
+                  />
                 ))}
               </div>
             </>
           ) : (
             <div className="text-center py-6">
-              <p className="text-gray-600 mb-4">
+              <p className="text-lg text-gray-600 mb-4">
                 You've applied to every listing you've found. Great work! 🙌
               </p>
             </div>
@@ -254,89 +162,36 @@ export default async function DashboardPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <FileText className="h-6 w-6 text-old_rose mr-2" />
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Active Applications
-              </h2>
+              <H2>Active Applications</H2>
             </div>
-            <Link
-              href="/applications/new"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
+            <LinkButton href="/applications/new">
               <Plus className="h-4 w-4 mr-2" />
               New Application
-            </Link>
+            </LinkButton>
           </div>
 
           {activeApps.length > 0 ? (
             <div className="space-y-4">
               {activeApps.map((application) => (
-                <div
+                <ApplicationDetail
+                  application={application}
                   key={application.id}
-                  className="border border-gray-200 rounded-lg p-4 hover:border-secondary transition-colors"
-                >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold text-gray-900">
-                        {application.title}
-                      </h3>
-                      <div className="flex items-center text-gray-600 mt-1">
-                        <Building2 className="h-4 w-4 mr-1" />
-                        {application.company}
-                      </div>
-                      <div className="flex items-center mt-2">
-                        <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            application.status === "applied"
-                              ? "bg-blue-100 text-blue-800"
-                              : application.status === "interviewing"
-                                ? "bg-green-100 text-green-800"
-                                : application.status === "in-progress"
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          {application.status?.charAt(0).toUpperCase() +
-                            application.status?.slice(1)}
-                        </span>
-                        <span className="ml-2 text-sm text-gray-500">
-                          Applied:{" "}
-                          {new Date(
-                            application.applied_at
-                          ).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                    <Link
-                      href={`/applications/${application.id}`}
-                      className="text-secondary hover:text-accent text-sm font-medium"
-                    >
-                      View Details →
-                    </Link>
-                  </div>
-                </div>
+                />
               ))}
 
               <div className="flex justify-center mt-6">
-                <Link
-                  href="/applications"
-                  className="text-secondary hover:text-accent font-medium"
-                >
-                  View All Applications →
-                </Link>
+                <ArrowLink href="/applications" text="View All Applications" />
               </div>
             </div>
           ) : (
             <div className="text-center py-6">
-              <p className="text-gray-600 mb-4">
+              <p className="text-lg text-gray-600 mb-4">
                 You haven't added any applications yet.
               </p>
-              <Link
-                href="/applications/new"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-accent"
-              >
+              <LinkButton href="/applications/new">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Your First Application
-              </Link>
+              </LinkButton>
             </div>
           )}
         </div>

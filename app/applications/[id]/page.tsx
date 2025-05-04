@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { ArrowLeft, Calendar, MapPin, Users, Briefcase, Globe, FileText } from 'lucide-react'
+import { formatDate, formatDateTime } from '@/utils/utils'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -58,15 +59,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     }
   }
 
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return 'Not set'
-    return format(new Date(dateString), 'PPP')
-  }
 
-  const formatDateTime = (dateString: string | null) => {
-    if (!dateString) return 'Not scheduled'
-    return format(new Date(dateString), 'PPP p')
-  }
 
   return (
     <div className="container mx-auto px-4 py-8">

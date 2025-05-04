@@ -39,22 +39,38 @@ export async function updateApplicationStatus(applicationId: number, status: App
     if (authError || !user) {
       return { error: 'You must be logged in to update applications' };
     }
+
+    const { data: application, error: findError } = await supabase
+      .from('applications')
+      .select()
+      .eq('id', applicationId)
+      .eq('user_id', user.id)
+      .single();
+
+    if (findError || !application) {
+        console.error('Error updating application:', findError);
+        return { error: 'Failed to update application' };
+    }
   
     // Update the application status and relevant timestamp
     const updateData: ApplicationUpdate = { status };
     
     // Set the appropriate timestamp based on status
-    if (status === 'APPLIED') {
+    if (status === ApplicationStatus.APPLIED) {
       updateData.applied_at = new Date().toISOString();
-    } else if (status === 'REJECTED') {
+    } else if (status === ApplicationStatus.REJECTED) {
       updateData.rejected_at = new Date().toISOString();
+    }
+
+    if (status !== ApplicationStatus.APPLIED && !application.applied_at) {
+        updateData.applied_at = new Date().toISOString();
     }
   
     const { data, error } = await supabase
       .from('applications')
       .update(updateData)
       .eq('id', applicationId)
-      .eq('user_id', user.id) // Ensure user owns this application
+      .eq('user_id', user.id)
       .select()
       .single();
   
