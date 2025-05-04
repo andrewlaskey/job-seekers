@@ -7,7 +7,7 @@ import ApplicationDetail from "@/components/applications/appllication-detail";
 import { Button } from "@/components/ui/button";
 import LinkButton from "@/components/ui/link-button";
 import ArrowLink from "@/components/ui/arrow-link";
-import InterviewDetails from "@/components/interviews/interview-details";
+import InterviewCard from "@/components/interviews/interview-details";
 import H2 from "@/components/typography/h2";
 
 export default async function DashboardPage() {
@@ -99,7 +99,7 @@ export default async function DashboardPage() {
               </p>
               <div className="space-y-4">
                 {upcomingInterviews.map((interview) => (
-                  <InterviewDetails interview={interview} key={interview.id} />
+                  <InterviewCard interview={interview} key={interview.id} />
                 ))}
               </div>
               <div className="flex justify-center mt-6">
