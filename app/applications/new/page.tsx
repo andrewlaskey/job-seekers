@@ -4,6 +4,9 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createApplication } from './actions';
 import { ApplicationInsertFormData } from '@/types/applications.types';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 export default function NewApplicationPage() {
   const router = useRouter();
@@ -48,7 +51,15 @@ export default function NewApplicationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Link
+        href="/applications" 
+        className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2" />
+        Back to Applications
+      </Link>
+
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">New Application</h1>
@@ -76,7 +87,7 @@ export default function NewApplicationPage() {
                 required
                 value={formData.title}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                 placeholder="e.g., Software Engineer"
               />
             </div>
@@ -92,7 +103,7 @@ export default function NewApplicationPage() {
                 required
                 value={formData.company}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                 placeholder="e.g., Acme Corp"
               />
             </div>
@@ -107,7 +118,7 @@ export default function NewApplicationPage() {
                 id="url"
                 value={formData.url}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                 placeholder="https://example.com/jobs/123"
               />
             </div>
@@ -122,23 +133,23 @@ export default function NewApplicationPage() {
                 rows={4}
                 value={formData.notes}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                 placeholder="Add any notes about this application..."
               />
             </div>
 
             <div>
-              <button
+              <Button
                 type="submit"
                 disabled={isSubmitting}
                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
                   isSubmitting
-                    ? 'bg-blue-400 cursor-not-allowed'
-                    : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                    ? 'bg-primary cursor-not-allowed'
+                    : 'bg-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                 }`}
               >
                 {isSubmitting ? 'Creating...' : 'Create Application'}
-              </button>
+              </Button>
             </div>
           </form>
         </div>
