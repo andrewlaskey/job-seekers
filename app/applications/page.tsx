@@ -1,7 +1,19 @@
-import Link from 'next/link';
-import { getApplications } from './actions';
+import Link from "next/link";
+import { getApplications } from "./actions";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export default async function ApplicationsPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    redirect("/sign-in");
+  }
+
   const { data: applications, error } = await getApplications();
 
   if (error) {
@@ -38,7 +50,9 @@ export default async function ApplicationsPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex-1 min-w-0">
                         <h3 className="text-lg font-medium text-gray-900 truncate">
-                          <Link href={`/applications/${application.id}`}>{application.title}</Link>
+                          <Link href={`/applications/${application.id}`}>
+                            {application.title}
+                          </Link>
                         </h3>
                         <p className="mt-1 text-sm text-gray-500">
                           {application.company}
@@ -47,13 +61,13 @@ export default async function ApplicationsPage() {
                       <div className="ml-4 flex-shrink-0">
                         <span
                           className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                            application.status === 'FOUND'
-                              ? 'bg-gray-100 text-gray-800'
-                              : application.status === 'APPLIED'
-                              ? 'bg-blue-100 text-blue-800'
-                              : application.status === 'REJECTED'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-green-100 text-green-800'
+                            application.status === "FOUND"
+                              ? "bg-gray-100 text-gray-800"
+                              : application.status === "APPLIED"
+                                ? "bg-blue-100 text-blue-800"
+                                : application.status === "REJECTED"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-green-100 text-green-800"
                           }`}
                         >
                           {application.status}
@@ -77,8 +91,10 @@ export default async function ApplicationsPage() {
                       </div>
                       <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
                         <p>
-                          Added on{' '}
-                          {new Date(application.created_at).toLocaleDateString()}
+                          Added on{" "}
+                          {new Date(
+                            application.created_at
+                          ).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
@@ -89,7 +105,9 @@ export default async function ApplicationsPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No applications</h3>
+            <h3 className="mt-2 text-sm font-medium text-gray-900">
+              No applications
+            </h3>
             <p className="mt-1 text-sm text-gray-500">
               Get started by creating a new application.
             </p>

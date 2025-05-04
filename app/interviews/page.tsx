@@ -1,12 +1,25 @@
-import Link from 'next/link';
-import { getInterviews } from './actions';
+import Link from "next/link";
+import { getInterviews } from "./actions";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export default async function InterviewsPage() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    redirect("/sign-in");
+  }
+
   // Fetch interviews with related application data
   const { data: interviews, error } = await getInterviews();
 
   if (error) {
-    console.error('Error fetching interviews:', error);
+    console.error("Error fetching interviews:", error);
     return <div>Error loading interviews</div>;
   }
 
@@ -31,7 +44,8 @@ export default async function InterviewsPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-blue-600">
-                        {interview.applications?.title} at {interview.applications?.company}
+                        {interview.applications?.title} at{" "}
+                        {interview.applications?.company}
                       </p>
                       <p className="mt-1 text-sm text-gray-500">
                         {new Date(interview.scheduled_at!).toLocaleString()}
@@ -41,13 +55,18 @@ export default async function InterviewsPage() {
                       {interview.location && (
                         <p>Location: {interview.location}</p>
                       )}
-                      {interview.interviewers && interview.interviewers.length > 0 && (
-                        <p>Interviewers: {interview.interviewers.join(', ')}</p>
-                      )}
+                      {interview.interviewers &&
+                        interview.interviewers.length > 0 && (
+                          <p>
+                            Interviewers: {interview.interviewers.join(", ")}
+                          </p>
+                        )}
                     </div>
                   </div>
                   {interview.notes && (
-                    <p className="mt-2 text-sm text-gray-600">{interview.notes}</p>
+                    <p className="mt-2 text-sm text-gray-600">
+                      {interview.notes}
+                    </p>
                   )}
                 </div>
               </li>
