@@ -1,12 +1,7 @@
 // app/dashboard/page.tsx
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import {
-  CalendarDays,
-  FileText,
-  Plus,
-  Briefcase,
-} from "lucide-react";
+import { CalendarDays, FileText, Plus, Briefcase } from "lucide-react";
 import { ApplicationStatus } from "@/types/applications.types";
 import ApplicationDetail from "@/components/applications/appllication-detail";
 import { Button } from "@/components/ui/button";
@@ -178,22 +173,17 @@ export default async function DashboardPage() {
                   key={application.id}
                 />
               ))}
-
-              <div className="flex justify-center mt-6">
-                <ArrowLink href="/applications" text="View All Applications" />
-              </div>
             </div>
           ) : (
             <div className="text-center py-6">
               <p className="text-lg text-gray-600 mb-4">
-                You haven't added any applications yet.
+                You don't have any active applications.
               </p>
-              <LinkButton href="/applications/new">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Your First Application
-              </LinkButton>
             </div>
           )}
+          <div className="flex justify-center mt-6">
+            <ArrowLink href="/applications" text="View All Applications" />
+          </div>
         </div>
       </section>
     </div>

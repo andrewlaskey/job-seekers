@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import ArrowLink from "../ui/arrow-link";
 import { formatDate } from "@/utils/utils";
+import UpdateStatusButton from "./update-status-button";
 
 export interface ApplicationDetailProps {
   application: Application;
@@ -26,7 +27,7 @@ export default function ApplicationDetail({
             {application.company}
           </div>
           <div className="flex items-center mt-2">
-            <ApplicationStatusBadge status={application.status} />
+            <UpdateStatusButton applicationId={application.id} currentStatus={application.status} />
             <span className="ml-2 text-sm text-gray-500">
               Applied: {formatDate(application.applied_at)}
             </span>
