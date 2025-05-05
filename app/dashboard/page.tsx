@@ -7,7 +7,7 @@ import ApplicationDetail from "@/components/applications/appllication-detail";
 import { Button } from "@/components/ui/button";
 import LinkButton from "@/components/ui/link-button";
 import ArrowLink from "@/components/ui/arrow-link";
-import InterviewCard from "@/components/interviews/interview-details";
+import InterviewCard from "@/components/interviews/interview-card";
 import H2 from "@/components/typography/h2";
 
 export default async function DashboardPage() {

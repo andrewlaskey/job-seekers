@@ -10,9 +10,13 @@ import { format } from "date-fns";
 
 export interface InterviewCardProps {
   interview: InterviewJoinApplications;
+  isAltVersion?: boolean;
 }
 
-export default function InterviewCard({ interview }: InterviewCardProps) {
+export default function InterviewCard({
+  interview,
+  isAltVersion = false,
+}: InterviewCardProps) {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     interview.scheduled_at ? new Date(interview.scheduled_at) : null
@@ -23,22 +27,22 @@ export default function InterviewCard({ interview }: InterviewCardProps) {
 
   const handleDateChange = async (date: Date | null) => {
     if (!date) return;
-    
+
     setIsUpdating(true);
     try {
       const result = await rescheduleInterview(
         interview.id,
         date.toISOString()
       );
-      
-      if ('error' in result) {
-        console.error('Failed to update interview date:', result.error);
+
+      if ("error" in result) {
+        console.error("Failed to update interview date:", result.error);
       } else {
         setSelectedDate(date);
         setIsDatePickerOpen(false);
       }
     } catch (error) {
-      console.error('Error updating interview date:', error);
+      console.error("Error updating interview date:", error);
     } finally {
       setIsUpdating(false);
     }
@@ -48,12 +52,12 @@ export default function InterviewCard({ interview }: InterviewCardProps) {
     setIsCancelling(true);
     try {
       const success = await cancelInterview(interview.id);
-      
+
       if (!success) {
-        console.error('Failed to cancel interview');
+        console.error("Failed to cancel interview");
       }
     } catch (error) {
-      console.error('Error cancelling interview:', error);
+      console.error("Error cancelling interview:", error);
     } finally {
       setIsCancelling(false);
       setShowCancelConfirm(false);
@@ -65,15 +69,24 @@ export default function InterviewCard({ interview }: InterviewCardProps) {
       key={interview.id}
       className="border border-gray-200 rounded-lg p-4 hover:border-secondary transition-colors"
     >
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-stretch">
         <div>
-          <h3 className="font-semibold text-gray-900">
-            {interview.applications.title} at {interview.applications.company}
-          </h3>
+          {!isAltVersion && (
+            <h3 className="font-semibold text-gray-900">
+              {interview.applications.title} at {interview.applications.company}
+            </h3>
+          )}
           <div className="flex items-center gap-2">
-            <p className="text-sm text-gray-600">
-              {formatDateTime(interview.scheduled_at)}
-            </p>
+            {isAltVersion && (
+              <p className="text-lg font-semibold text-gray-600">
+                {formatDateTime(interview.scheduled_at)}
+              </p>
+            )}
+            {!isAltVersion && (
+              <p className="text-sm text-gray-600">
+                {formatDateTime(interview.scheduled_at)}
+              </p>
+            )}
             <button
               onClick={() => setIsDatePickerOpen(true)}
               className="p-1 hover:bg-gray-100 rounded-full transition-colors"
@@ -91,50 +104,67 @@ export default function InterviewCard({ interview }: InterviewCardProps) {
           {interview.interviewers && interview.interviewers.length > 0 && (
             <p className="text-sm text-gray-600 mt-1">
               Interviewer
-              {interview.interviewers.length > 1 ? "s" : ""}:{" "}
+              {interview.interviewers.length > 1 ? "s:" : ":"}:{" "}
               {interview.interviewers.join(", ")}
             </p>
           )}
         </div>
-        <ArrowLink
-          href={`/applications/${interview.application_id}`}
-          text="View Application"
-        />
-      </div>
-      
-      {/* Cancel button in lower right */}
-      <div className="mt-4 flex justify-end">
-        {!showCancelConfirm ? (
-          <button
-            onClick={() => setShowCancelConfirm(true)}
-            className="px-3 py-1 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
-            disabled={isCancelling}
+
+        <div className="h-full">
+          {!isAltVersion && (
+            <ArrowLink
+              href={`/applications/${interview.application_id}`}
+              text="View Application"
+            />
+          )}
+
+          <div
+            className={`mt-4 flex ${isAltVersion ? "justify-start" : "justify-end"}`}
           >
-            Cancel
-          </button>
-        ) : (
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Are you sure?</span>
-            <button
-              onClick={handleCancelInterview}
-              className="p-1 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-full transition-colors"
-              disabled={isCancelling}
-              aria-label="Confirm cancel"
-            >
-              <Check className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => setShowCancelConfirm(false)}
-              className="p-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-full transition-colors"
-              disabled={isCancelling}
-              aria-label="Cancel cancellation"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            {!showCancelConfirm ? (
+              <button
+                onClick={() => setShowCancelConfirm(true)}
+                className="px-3 py-1 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                disabled={isCancelling}
+              >
+                Cancel
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Are you sure?</span>
+                <button
+                  onClick={handleCancelInterview}
+                  className="p-1 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-full transition-colors"
+                  disabled={isCancelling}
+                  aria-label="Confirm cancel"
+                >
+                  <Check className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => setShowCancelConfirm(false)}
+                  className="p-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-full transition-colors"
+                  disabled={isCancelling}
+                  aria-label="Cancel cancellation"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
-      
+
+      {isAltVersion && interview.notes && (
+        <div>
+          <p className="text-sm text-gray-600 mt-1">Notes:</p>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <p className="text-gray-700 whitespace-pre-wrap">
+              {interview.notes}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Date Picker Modal/Popover */}
       {isDatePickerOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
@@ -142,7 +172,9 @@ export default function InterviewCard({ interview }: InterviewCardProps) {
             <h3 className="text-lg font-semibold mb-4">Select New Date</h3>
             <input
               type="datetime-local"
-              defaultValue={selectedDate ? format(selectedDate, "yyyy-MM-dd'T'HH:mm") : ''}
+              defaultValue={
+                selectedDate ? format(selectedDate, "yyyy-MM-dd'T'HH:mm") : ""
+              }
               onChange={(e) => {
                 const date = e.target.value ? new Date(e.target.value) : null;
                 handleDateChange(date);

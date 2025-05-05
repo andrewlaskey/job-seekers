@@ -1,75 +1,85 @@
-import { createClient } from '@/utils/supabase/server'
-import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import { format } from 'date-fns'
-import { ArrowLeft, Calendar, MapPin, Users, Briefcase, Globe, FileText } from 'lucide-react'
-import { formatDate, formatDateTime } from '@/utils/utils'
+import { createClient } from "@/utils/supabase/server";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { format } from "date-fns";
+import {
+  Calendar,
+  MapPin,
+  Users,
+  Briefcase,
+  Globe,
+  FileText,
+  Plus,
+  Calendar1,
+} from "lucide-react";
+import { formatDate, formatDateTime } from "@/utils/utils";
+import ArrowLink from "@/components/ui/arrow-link";
+import LinkButton from "@/components/ui/link-button";
+import H2 from "@/components/typography/h2";
+import InterviewCard from "@/components/interviews/interview-card";
+import ReturnLink from "@/components/ui/return-link";
+import UpdateStatusButton from "@/components/applications/update-status-button";
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 export default async function ApplicationDetailPage({ params }: PageProps) {
-  const { id } = await params
-  const supabase = await createClient()
+  const { id } = await params;
+  const supabase = await createClient();
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-  
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
   if (authError || !user) {
-    return { error: 'You must be logged in to view applications' };
+    return { error: "You must be logged in to view applications" };
   }
 
   // Fetch the application
   const { data: application, error: appError } = await supabase
-    .from('applications')
-    .select('*')
-    .eq('id', id)
-    .eq('user_id', user.id)
-    .single()
+    .from("applications")
+    .select("*")
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .single();
 
   if (appError || !application) {
-    notFound()
+    notFound();
   }
 
   // Fetch associated interviews
   const { data: interviews, error: interviewsError } = await supabase
-    .from('interviews')
-    .select('*')
-    .eq('application_id', application.id)
-    .eq('user_id', user.id)
-    .order('scheduled_at', { ascending: true })
+    .from("interviews")
+    .select("*")
+    .eq("application_id", application.id)
+    .eq("user_id", user.id)
+    .order("scheduled_at", { ascending: true });
 
   if (interviewsError) {
-    console.error('Error fetching interviews:', interviewsError)
+    console.error("Error fetching interviews:", interviewsError);
   }
 
   // Status color mapping
   const getStatusColor = (status: string | null) => {
     switch (status?.toLowerCase()) {
-      case 'applied':
-        return 'bg-blue-100 text-blue-800'
-      case 'interviewing':
-        return 'bg-yellow-100 text-yellow-800'
-      case 'offered':
-        return 'bg-green-100 text-green-800'
-      case 'rejected':
-        return 'bg-red-100 text-red-800'
+      case "applied":
+        return "bg-blue-100 text-blue-800";
+      case "interviewing":
+        return "bg-yellow-100 text-yellow-800";
+      case "offered":
+        return "bg-green-100 text-green-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
       default:
-        return 'bg-gray-100 text-gray-800'
+        return "bg-gray-100 text-gray-800";
     }
-  }
-
-
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Link 
-        href="/applications" 
-        className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
-      >
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to Applications
-      </Link>
+      <ReturnLink href="/applications" text="Back to Applications" />
 
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Header */}
@@ -77,15 +87,16 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                {application.title || 'Untitled Position'}
+                {application.title || "Untitled Position"}
               </h1>
               <p className="text-lg text-gray-600">
-                {application.company || 'Unknown Company'}
+                {application.company || "Unknown Company"}
               </p>
             </div>
-            <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(application.status)}`}>
-              {application.status || 'Pending'}
-            </span>
+            <UpdateStatusButton
+              applicationId={application.id}
+              currentStatus={application.status}
+            />
           </div>
         </div>
 
@@ -93,49 +104,26 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h2 className="text-lg font-semibold mb-4 text-gray-900">Application Details</h2>
+              <h2 className="text-lg font-semibold mb-4 text-gray-900">
+                Application Details
+              </h2>
               <div className="space-y-3">
                 <div className="flex items-center">
                   <Calendar className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
                     <p className="text-sm text-gray-500">Found on</p>
-                    <p className="font-medium text-gray-900">{formatDate(application.found_at)}</p>
+                    <p className="font-medium text-gray-900">
+                      {formatDate(application.found_at)}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <Calendar className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
                     <p className="text-sm text-gray-500">Applied on</p>
-                    <p className="font-medium text-gray-900">{formatDate(application.applied_at)}</p>
-                  </div>
-                </div>
-                {application.url && (
-                  <div className="flex items-center">
-                    <Globe className="w-5 h-5 text-gray-400 mr-3" />
-                    <div>
-                      <p className="text-sm text-gray-500">Job Posting</p>
-                      <a 
-                        href={application.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="font-medium text-blue-600 hover:text-blue-800"
-                      >
-                        View Posting
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <h2 className="text-lg font-semibold mb-4 text-gray-900">Status Timeline</h2>
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <Briefcase className="w-5 h-5 text-gray-400 mr-3" />
-                  <div>
-                    <p className="text-sm text-gray-500">Current Status</p>
-                    <p className="font-medium text-gray-900">{application.status || 'Pending'}</p>
+                    <p className="font-medium text-gray-900">
+                      {formatDate(application.applied_at)}
+                    </p>
                   </div>
                 </div>
                 {application.rejected_at && (
@@ -143,75 +131,68 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                     <Calendar className="w-5 h-5 text-gray-400 mr-3" />
                     <div>
                       <p className="text-sm text-gray-500">Rejected on</p>
-                      <p className="font-medium">{formatDate(application.rejected_at)}</p>
+                      <p className="font-medium text-gray-900">
+                        {formatDate(application.rejected_at)}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {application.url && (
+                  <div className="flex items-center">
+                    <Globe className="w-5 h-5 text-gray-400 mr-3" />
+                    <div>
+                      <p className="text-sm text-gray-500">Job Posting</p>
+                      <Link
+                        href={application.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Posting
+                      </Link>
                     </div>
                   </div>
                 )}
               </div>
             </div>
-          </div>
 
-          {/* Notes Section */}
-          {application.notes && (
-            <div className="mt-8">
-              <h2 className="text-lg font-semibold mb-4 flex items-center">
-                <FileText className="w-5 h-5 text-gray-400 mr-2" />
-                Notes
-              </h2>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <p className="text-gray-700 whitespace-pre-wrap">{application.notes}</p>
+            {application.notes && (
+              <div>
+                <h2 className="text-lg font-semibold mb-4 flex items-center">
+                  <FileText className="w-5 h-5 text-gray-400 mr-2" />
+                  Notes
+                </h2>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-gray-700 whitespace-pre-wrap">
+                    {application.notes}
+                  </p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Interviews Section */}
           <div className="mt-8">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Interviews</h2>
-              <Link
+              <div className="flex items-center">
+                <Calendar1 className="h-6 w-6 text-old_rose mr-2" />
+                <H2>Interviews</H2>
+              </div>
+              <LinkButton
                 href={`/applications/${application.id}/interviews/new`}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
+                <Plus className="h-4 w-4 mr-2" />
                 Schedule Interview
-              </Link>
+              </LinkButton>
             </div>
 
             {interviews && interviews.length > 0 ? (
               <div className="space-y-4">
                 {interviews.map((interview) => (
-                  <div 
-                    key={interview.id} 
-                    className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors"
-                  >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="font-medium text-gray-900">
-                          {formatDateTime(interview.scheduled_at)}
-                        </p>
-                        {interview.location && (
-                          <div className="flex items-center mt-2 text-gray-600">
-                            <MapPin className="w-4 h-4 mr-2" />
-                            {interview.location}
-                          </div>
-                        )}
-                        {interview.interviewers && interview.interviewers.length > 0 && (
-                          <div className="flex items-center mt-2 text-gray-600">
-                            <Users className="w-4 h-4 mr-2" />
-                            {interview.interviewers.join(', ')}
-                          </div>
-                        )}
-                      </div>
-                      <Link
-                        href={`/applications/${application.id}/interviews/${interview.id}`}
-                        className="text-blue-600 hover:text-blue-800 text-sm"
-                      >
-                        View Details
-                      </Link>
-                    </div>
-                    {interview.notes && (
-                      <p className="mt-3 text-gray-600 text-sm">{interview.notes}</p>
-                    )}
-                  </div>
+                  <InterviewCard
+                    interview={{ ...interview, applications: application }}
+                    key={interview.id}
+                    isAltVersion={true}
+                  />
                 ))}
               </div>
             ) : (
@@ -249,5 +230,5 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         </button> */}
       </div>
     </div>
-  )
+  );
 }

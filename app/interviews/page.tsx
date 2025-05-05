@@ -3,7 +3,7 @@ import { getInterviews } from "./actions";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import LinkButton from "@/components/ui/link-button";
-import InterviewCard from "@/components/interviews/interview-details";
+import InterviewCard from "@/components/interviews/interview-card";
 import { Calendar1, Plus } from "lucide-react";
 
 export default async function InterviewsPage() {
