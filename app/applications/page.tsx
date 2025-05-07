@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import LinkButton from "@/components/ui/link-button";
 import { FileText, Plus } from "lucide-react";
-import ApplicationDetail from "@/components/applications/appllication-detail";
+import ApplicationCard from "@/components/applications/appllication-card";
 
 export default async function ApplicationsPage() {
   const supabase = await createClient();
@@ -49,7 +49,7 @@ export default async function ApplicationsPage() {
           <div className="bg-white shadow overflow-hidden sm:rounded-md">
           <div className="space-y-4 p-4">
               {applications.map((application) => (
-                <ApplicationDetail application={application} key={application.id} />
+                <ApplicationCard application={application} key={application.id} />
               ))}
             </div>
           </div>

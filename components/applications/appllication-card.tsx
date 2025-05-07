@@ -11,7 +11,7 @@ export interface ApplicationDetailProps {
   application: Application;
 }
 
-export default function ApplicationDetail({
+export default function ApplicationCard({
   application,
 }: ApplicationDetailProps) {
   return (
@@ -33,7 +33,7 @@ export default function ApplicationDetail({
             </span>
           </div>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex flex-col space-y-2">
           {application.status === ApplicationStatus.FOUND &&
             application.url && (
               <ArrowLink href={application.url} text="Apply Now" />

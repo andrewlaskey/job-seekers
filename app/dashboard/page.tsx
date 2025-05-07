@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { CalendarDays, FileText, Plus, Briefcase } from "lucide-react";
 import { ApplicationStatus } from "@/types/applications.types";
-import ApplicationDetail from "@/components/applications/appllication-detail";
+import ApplicationCard from "@/components/applications/appllication-card";
 import { Button } from "@/components/ui/button";
 import LinkButton from "@/components/ui/link-button";
 import ArrowLink from "@/components/ui/arrow-link";
@@ -134,7 +134,7 @@ export default async function DashboardPage() {
               </p>
               <div className="space-y-4">
                 {foundApps.map((application) => (
-                  <ApplicationDetail
+                  <ApplicationCard
                     application={application}
                     key={application.id}
                   />
@@ -168,7 +168,7 @@ export default async function DashboardPage() {
           {activeApps.length > 0 ? (
             <div className="space-y-4">
               {activeApps.map((application) => (
-                <ApplicationDetail
+                <ApplicationCard
                   application={application}
                   key={application.id}
                 />
