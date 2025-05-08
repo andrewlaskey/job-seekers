@@ -1,18 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { format } from "date-fns";
 import {
-  Calendar,
-  MapPin,
-  Users,
-  Briefcase,
   Globe,
   FileText,
   Plus,
   Calendar1,
 } from "lucide-react";
-import { formatDate, formatDateTime } from "@/utils/utils";
 import ArrowLink from "@/components/ui/arrow-link";
 import LinkButton from "@/components/ui/link-button";
 import H2 from "@/components/typography/h2";
@@ -20,8 +14,8 @@ import InterviewCard from "@/components/interviews/interview-card";
 import ReturnLink from "@/components/ui/return-link";
 import UpdateStatusButton from "@/components/applications/update-status-button";
 import { ApplicationStatus } from "@/types/applications.types";
-import { deleteApplication } from "@/actions/applicationActions";
 import DeleteApplicationButton from "@/components/applications/application-delete-button";
+import ApplicationDateDisplay from "@/components/applications/application-date-display";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -80,16 +74,6 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     }
   };
 
-  const handleDelete = async () => {
-    const { error } = await deleteApplication(application.id);
-
-    if (error) {
-      console.error('Error deleting application');
-    }
-
-    redirect('/applications');
-  }
-
   return (
     <div className="container mx-auto px-4 py-8">
       <ReturnLink href="/applications" text="Back to Applications" />
@@ -121,34 +105,10 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                 Application Details
               </h2>
               <div className="space-y-3">
-                <div className="flex items-center">
-                  <Calendar className="w-5 h-5 text-gray-400 mr-3" />
-                  <div>
-                    <p className="text-sm text-gray-500">Found on</p>
-                    <p className="font-medium text-gray-900">
-                      {formatDate(application.found_at)}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <Calendar className="w-5 h-5 text-gray-400 mr-3" />
-                  <div>
-                    <p className="text-sm text-gray-500">Applied on</p>
-                    <p className="font-medium text-gray-900">
-                      {formatDate(application.applied_at)}
-                    </p>
-                  </div>
-                </div>
+                <ApplicationDateDisplay application={application} text="Found on" dateKey="found_at" />
+                <ApplicationDateDisplay application={application} text="Applied on" dateKey="applied_at" />
                 {application.rejected_at && (
-                  <div className="flex items-center">
-                    <Calendar className="w-5 h-5 text-gray-400 mr-3" />
-                    <div>
-                      <p className="text-sm text-gray-500">Rejected on</p>
-                      <p className="font-medium text-gray-900">
-                        {formatDate(application.rejected_at)}
-                      </p>
-                    </div>
-                  </div>
+                  <ApplicationDateDisplay application={application} text="Rejected on" dateKey="rejected_at" />
                 )}
                 {application.url && (
                   <div className="flex items-center">

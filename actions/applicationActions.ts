@@ -179,3 +179,41 @@ export async function deleteApplication(
     return { error: "Failed to delete application" };
   }
 }
+
+export async function updateDate(
+  id: number,
+  dateString: string,
+  key: "applied_at" | "found_at" | "rejected_at"
+) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return { error: "You must be logged in to update interviews" };
+  }
+
+  const updateData = {
+    [key]: dateString,
+  };
+
+  const { data, error } = await supabase
+    .from("applications")
+    .update(updateData)
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating interview:", error);
+    return { error: "Failed to update interview" };
+  }
+
+  revalidatePath("/applications");
+
+  return { data };
+}
