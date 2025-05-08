@@ -104,7 +104,7 @@ export default function InterviewCard({
           {interview.interviewers && interview.interviewers.length > 0 && (
             <p className="text-sm text-gray-600 mt-1">
               Interviewer
-              {interview.interviewers.length > 1 ? "s:" : ":"}:{" "}
+              {interview.interviewers.length > 1 ? "s" : ""}:{" "}
               {interview.interviewers.join(", ")}
             </p>
           )}

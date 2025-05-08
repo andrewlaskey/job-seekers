@@ -104,7 +104,6 @@ export async function updateApplication(
 ) {
   const supabase = await createClient();
 
-  // Get the authenticated user
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -148,4 +147,35 @@ export async function getApplication(id: number): Promise<Application | null> {
   }
 
   return data;
+}
+
+export async function deleteApplication(
+  id: number
+): Promise<{ success?: boolean; error?: string }> {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { error: "You must be logged in to update an application" };
+  }
+
+  try {
+    const { error } = await supabase
+      .from("applications")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error deleting application: ", error);
+      return { error: "Failed to delete application" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting application: ", error);
+    return { error: "Failed to delete application" };
+  }
 }

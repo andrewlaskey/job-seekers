@@ -112,6 +112,18 @@ const config = {
           800: "#eaccca",
           900: "#f5e5e5",
         },
+        xanthous: {
+          DEFAULT: "#ffbf46",
+          100: "#412a00",
+          200: "#835500",
+          300: "#c47f00",
+          400: "#ffa806",
+          500: "#ffbf46",
+          600: "#ffcc6c",
+          700: "#ffd891",
+          800: "#ffe5b6",
+          900: "#fff2da",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

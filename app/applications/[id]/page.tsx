@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { format } from "date-fns";
 import {
@@ -20,6 +20,8 @@ import InterviewCard from "@/components/interviews/interview-card";
 import ReturnLink from "@/components/ui/return-link";
 import UpdateStatusButton from "@/components/applications/update-status-button";
 import { ApplicationStatus } from "@/types/applications.types";
+import { deleteApplication } from "@/actions/applicationActions";
+import DeleteApplicationButton from "@/components/applications/application-delete-button";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -77,6 +79,16 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         return "bg-gray-100 text-gray-800";
     }
   };
+
+  const handleDelete = async () => {
+    const { error } = await deleteApplication(application.id);
+
+    if (error) {
+      console.error('Error deleting application');
+    }
+
+    redirect('/applications');
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -222,15 +234,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         >
           Edit Application
         </Link>
-        {/* <button
-          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-          onClick={() => {
-            // Add delete functionality here
-            console.log('Delete application:', application.id)
-          }}
-        >
-          Delete Application
-        </button> */}
+        <DeleteApplicationButton applicationId={application.id}/>
       </div>
     </div>
   );

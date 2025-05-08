@@ -5,19 +5,23 @@ export interface ApplicationStatusBadgeProps {
 }
 
 export default function ApplicationStatusBadge({ status }: ApplicationStatusBadgeProps) {
-    let colorClassNames = 'bg-gray-100 text-gray-800';
+    let colorClassNames = 'bg-gray-300 text-gray-800';
 
     switch(status) {
+        case ApplicationStatus.FOUND: {
+            colorClassNames = 'bg-xanthous-800 text-xanthous-100';
+            break;
+        }
         case ApplicationStatus.APPLIED: {
-            colorClassNames = 'bg-pacific_cyan-100 text-pacific_cyan-800';
+            colorClassNames = 'bg-pacific_cyan-800 text-pacific_cyan-100';
             break;
         }
         case ApplicationStatus.INTERVIEWING: {
-            colorClassNames = 'bg-light_green-100 text-light_green-800';
+            colorClassNames = 'bg-light_green-800 text-light_green-100';
             break;
         }
         case ApplicationStatus.REJECTED: {
-            colorClassNames = 'bg-old_rose-100 text-old_rose-800';
+            colorClassNames = 'bg-old_rose-800 text-old_rose-100';
             break;
         }
     }
