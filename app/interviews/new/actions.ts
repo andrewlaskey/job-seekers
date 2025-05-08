@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/utils/supabase/server';
-import { updateApplicationStatus } from '@/app/applications/actions';
+import { updateApplicationStatus } from '@/actions/applicationActions';
 import { ApplicationStatus } from '@/types/applications.types';
 
 export async function createInterview(prevState: any, formData: FormData) {

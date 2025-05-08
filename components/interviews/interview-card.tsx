@@ -5,7 +5,7 @@ import { formatDateTime } from "@/utils/utils";
 import ArrowLink from "../ui/arrow-link";
 import { Calendar, Check, X } from "lucide-react";
 import { useState } from "react";
-import { rescheduleInterview, cancelInterview } from "@/app/interviews/actions";
+import { rescheduleInterview, cancelInterview } from "@/actions/interviewActions";
 import { format } from "date-fns";
 
 export interface InterviewCardProps {

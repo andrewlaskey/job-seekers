@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useState } from 'react'
 import { Calendar, MapPin, Users, FileText } from 'lucide-react'
-import { getApplications } from '@/app/applications/actions'
+import { getApplications } from '@/actions/applicationActions'
 import { Application } from '@/types/applications.types'
 import { Button } from './ui/button'
 

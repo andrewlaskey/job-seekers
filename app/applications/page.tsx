@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getApplications } from "./actions";
+import { getApplications } from "../../actions/applicationActions";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import LinkButton from "@/components/ui/link-button";

@@ -26,7 +26,7 @@ export type ApplicationInsertFormData = {
     title: string;
     company: string;
     url: string;
-    notes: string;
+    notes: string | null;
 }
 
 export type Interview = Database['public']['Tables']['interviews']['Row'];

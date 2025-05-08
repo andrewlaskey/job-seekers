@@ -19,6 +19,7 @@ import H2 from "@/components/typography/h2";
 import InterviewCard from "@/components/interviews/interview-card";
 import ReturnLink from "@/components/ui/return-link";
 import UpdateStatusButton from "@/components/applications/update-status-button";
+import { ApplicationStatus } from "@/types/applications.types";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -197,14 +198,16 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
               </div>
             ) : (
               <div className="text-center py-8 bg-gray-50 rounded-lg">
-                <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                <p className="text-gray-500">No interviews scheduled yet</p>
-                <Link
-                  href={`/applications/${application.id}/interviews/new`}
-                  className="mt-4 inline-block text-blue-600 hover:text-blue-800"
-                >
-                  Schedule your first interview
-                </Link>
+                <p className="text-gray-500">No interviews scheduled yet.</p>
+                {application.status === ApplicationStatus.FOUND && (
+                  <div>
+                    <p className="text-gray-500">Let's fix that by submitting an application. You got this! 🫡</p>
+                    <ArrowLink href={application.url} text="Apply Now" />
+                  </div>
+                )}
+                {application.status !== ApplicationStatus.FOUND && (
+                <p className="text-gray-500">Hoping they reach out to you 🤞</p>
+                )}
               </div>
             )}
           </div>

@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
 } from "../ui/dropdown-menu";
-import { updateApplicationStatus } from '@/app/applications/actions';
+import { updateApplicationStatus } from '@/actions/applicationActions';
 import { Check, X } from 'lucide-react';
 
 export interface UpdateStatusButtonProps {
