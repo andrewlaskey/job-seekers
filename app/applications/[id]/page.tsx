@@ -16,6 +16,7 @@ import UpdateStatusButton from "@/components/applications/update-status-button";
 import { ApplicationStatus } from "@/types/applications.types";
 import DeleteApplicationButton from "@/components/applications/application-delete-button";
 import ApplicationDateDisplay from "@/components/applications/application-date-display";
+import ApplicationNotes from "@/components/applications/application-notes";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -129,17 +130,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
             </div>
 
             {application.notes && (
-              <div>
-                <h2 className="text-lg font-semibold mb-4 flex items-center">
-                  <FileText className="w-5 h-5 text-gray-400 mr-2" />
-                  Notes
-                </h2>
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-gray-700 whitespace-pre-wrap">
-                    {application.notes}
-                  </p>
-                </div>
-              </div>
+              <ApplicationNotes application={application} />
             )}
           </div>
 

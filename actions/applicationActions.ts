@@ -105,7 +105,10 @@ export async function updateApplicationStatus(
   // Set the appropriate timestamp based on status
   if (status === ApplicationStatus.APPLIED) {
     updateData.applied_at = new Date().toISOString();
-  } else if (status === ApplicationStatus.REJECTED) {
+  } else if (
+    status === ApplicationStatus.REJECTED &&
+    !application.rejected_at
+  ) {
     updateData.rejected_at = new Date().toISOString();
   }
 
@@ -162,6 +165,38 @@ export async function updateApplication(
       .eq("user_id", user.id);
 
     if (error) throw error;
+
+    revalidatePath("/applications");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating application:", error);
+    return { error: "Failed to update application" };
+  }
+}
+
+export async function updateApplicationNotes(id: number, notes: string | null) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { error: "You must be logged in to update an application" };
+  }
+
+  try {
+    const { error } = await supabase
+      .from("applications")
+      .update({
+        notes: notes,
+      })
+      .eq("id", id)
+      .eq("user_id", user.id);
+
+    if (error) throw error;
+
+    revalidatePath("/applications");
 
     return { success: true };
   } catch (error) {

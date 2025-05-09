@@ -7,6 +7,7 @@ import { Check, X } from "lucide-react";
 import { useState } from "react";
 import { rescheduleInterview, cancelInterview } from "@/actions/interviewActions";
 import DateUpdateButton from "../ui/date-update-button";
+import InterviewNotes from "./interview-notes";
 
 export interface InterviewCardProps {
   interview: InterviewJoinApplications;
@@ -127,16 +128,9 @@ export default function InterviewCard({
           </div>
         </div>
       </div>
-
-      {isAltVersion && interview.notes && (
-        <div>
-          <p className="text-sm text-gray-600 mt-1">Notes:</p>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-gray-700 whitespace-pre-wrap">
-              {interview.notes}
-            </p>
-          </div>
-        </div>
+      
+      {isAltVersion && (
+        <InterviewNotes interview={interview} />
       )}
     </div>
   );

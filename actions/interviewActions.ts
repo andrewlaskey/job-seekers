@@ -99,3 +99,33 @@ export async function rescheduleInterview(id: number, dateString: string) {
 
   return { data };
 }
+
+export async function updateInterviewNotes(id: number, notes: string | null) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { error: "You must be logged in to update an interview" };
+  }
+
+  try {
+    const { error } = await supabase
+      .from("interviews")
+      .update({
+        notes: notes,
+      })
+      .eq("id", id)
+      .eq("user_id", user.id);
+
+    if (error) throw error;
+
+    revalidatePath("/interviews");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating interview:", error);
+    return { error: "Failed to update interview" };
+  }
+}
