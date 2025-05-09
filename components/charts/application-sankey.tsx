@@ -255,10 +255,6 @@ export default function ApplicationSankey({
     );
   };
 
-  useEffect(() => {
-    console.log("Sankey Data:", JSON.stringify(sankeyData));
-  }, [sankeyData]);
-
   return (
     <div className="w-full p-4 relative">
       <ResponsiveContainer width="100%" height={360}>

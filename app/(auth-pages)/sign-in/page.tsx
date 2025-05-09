@@ -46,8 +46,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
           <FormMessage message={searchParams} />
         </div>
       </form>
-      <div>
-        <H2>Social Login</H2>
+      <div className="w-full border-t-2 border-gray-300  my-8">
         <GoogleOneTapComponent />
       </div>
     </div>

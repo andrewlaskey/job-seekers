@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
+import GoogleOneTapComponent from "@/components/social/google-one-tap";
 
 export default async function Signup(props: {
   searchParams: Promise<Message>;
@@ -19,7 +20,7 @@ export default async function Signup(props: {
   }
 
   return (
-    <>
+    <div className="flex flex-col">
       <form className="flex flex-col min-w-64 max-w-64 mx-auto">
         <h1 className="text-2xl font-medium">Sign up</h1>
         <p className="text-sm text text-foreground">
@@ -46,6 +47,9 @@ export default async function Signup(props: {
         </div>
       </form>
       <SmtpMessage />
-    </>
+      <div className="w-full border-t-2 border-gray-300  my-8">
+        <GoogleOneTapComponent />
+      </div>
+    </div>
   );
 }
