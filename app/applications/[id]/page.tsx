@@ -174,7 +174,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                 {application.status === ApplicationStatus.FOUND && (
                   <div>
                     <p className="text-gray-500">Let's fix that by submitting an application. You got this! 🫡</p>
-                    <ArrowLink href={application.url} text="Apply Now" />
+                    <ArrowLink href={application.url} text="Apply Now" target="_blank" />
                   </div>
                 )}
                 {application.status !== ApplicationStatus.FOUND && (

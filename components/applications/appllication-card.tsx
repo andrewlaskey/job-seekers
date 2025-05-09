@@ -36,7 +36,7 @@ export default function ApplicationCard({
         <div className="flex flex-col space-y-2">
           {application.status === ApplicationStatus.FOUND &&
             application.url && (
-              <ArrowLink href={application.url} text="Apply Now" />
+              <ArrowLink href={application.url} text="Apply Now" target="_blank"/>
             )}
           <ArrowLink
             href={`/applications/${application.id}`}

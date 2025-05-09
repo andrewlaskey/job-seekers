@@ -4,11 +4,12 @@ import { redirect } from "next/navigation";
 import { CalendarDays, FileText, Plus, Briefcase } from "lucide-react";
 import { ApplicationStatus } from "@/types/applications.types";
 import ApplicationCard from "@/components/applications/appllication-card";
-import { Button } from "@/components/ui/button";
 import LinkButton from "@/components/ui/link-button";
 import ArrowLink from "@/components/ui/arrow-link";
 import InterviewCard from "@/components/interviews/interview-card";
 import H2 from "@/components/typography/h2";
+import { getApplicationsWithInterviews } from "@/actions/applicationActions";
+import ApplicationSankey from "@/components/charts/application-sankey";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -22,6 +23,9 @@ export default async function DashboardPage() {
   if (authError || !user) {
     redirect("/sign-in");
   }
+
+  const { data: applicationsWithInterviews, error: appsWithInterviewsError } =
+    await getApplicationsWithInterviews(user.id);
 
   // Fetch upcoming interviews (within next 30 days)
   const thirtyDaysFromNow = new Date();
@@ -75,6 +79,10 @@ export default async function DashboardPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Dashboard</h1>
+
+      {applicationsWithInterviews && applicationsWithInterviews.length > 0 && (
+        <ApplicationSankey applications={applicationsWithInterviews} />
+      )}
 
       {/* Upcoming Interviews Section */}
       <section className="mb-12">

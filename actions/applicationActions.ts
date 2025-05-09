@@ -5,6 +5,7 @@ import {
   Application,
   ApplicationInsertFormData,
   ApplicationStatus,
+  ApplicationWithInterviews,
 } from "@/types/applications.types";
 import { ApplicationUpdate } from "@/types/applications.types";
 import { revalidatePath } from "next/cache";
@@ -32,6 +33,39 @@ export async function getApplications() {
   if (error) {
     console.error("Error fetching applications:", error);
     return { error: "Failed to fetch applications" };
+  }
+
+  return { data };
+}
+
+export async function getApplicationsWithInterviews(
+  userId: string
+): Promise<{ data?: ApplicationWithInterviews[]; error?: string }> {
+  const supabase = await createClient();
+
+  // Check if user is authenticated
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return { error: "You must be logged in to view applications" };
+  }
+
+  const { data, error } = await supabase
+    .from("applications")
+    .select(
+      `
+      *,
+      interviews (*)
+    `
+    )
+    .eq("user_id", userId);
+
+  if (error) {
+    console.error("Error fetching applications with interviews:", error);
+    throw error;
   }
 
   return { data };
@@ -75,7 +109,11 @@ export async function updateApplicationStatus(
     updateData.rejected_at = new Date().toISOString();
   }
 
-  if (status !== ApplicationStatus.APPLIED && !application.applied_at) {
+  if (
+    !application.applied_at &&
+    (status === ApplicationStatus.INTERVIEWING ||
+      status === ApplicationStatus.REJECTED)
+  ) {
     updateData.applied_at = new Date().toISOString();
   }
 

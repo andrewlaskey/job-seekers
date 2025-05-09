@@ -111,3 +111,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+.recharts-tooltip-wrapper {
+  visibility: visible !important;
+  z-index: 1000 !important;
+  pointer-events: none !important;
+}
