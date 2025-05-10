@@ -13,34 +13,36 @@ import {
 } from "./ui/dropdown-menu";
 import { User } from "lucide-react";
 import { signOutAction } from "@/app/actions";
+import { useRouter } from "next/navigation";
 
 export default function AuthButtonClient() {
   const supabase = createClient();
+  const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial auth state
-    const checkUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
       setLoading(false);
-    };
-
-    checkUser();
-
-    // Subscribe to auth changes
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-        setLoading(false);
+      // Force refresh when auth state changes
+      if (event === "SIGNED_OUT") {
+        router.refresh();
       }
-    );
+    });
+
+    // Initial check
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user || null);
+      setLoading(false);
+    });
 
     return () => {
-      authListener.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
-  }, [supabase]);
+  }, [router, supabase.auth]);
 
   if (loading) {
     return (

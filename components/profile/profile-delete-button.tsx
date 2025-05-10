@@ -1,5 +1,6 @@
 "use client";
 
+import { createClient } from "@/utils/supabase/client";
 import DeleteButton from "../ui/delete-button";
 
 interface ProfileDeleteButtonProps {
@@ -18,6 +19,12 @@ export default function ProfileDeleteButton({
       if (!response.ok) {
         return false;
       }
+
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    
+      // Force a full page refresh to clear any cached state
+      window.location.href = "/";
 
       return true;
     } catch (error) {
