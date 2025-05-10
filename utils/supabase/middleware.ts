@@ -48,12 +48,12 @@ export const updateSession = async (request: NextRequest) => {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
-    if (request.nextUrl.pathname.startsWith("/applications") && user.error) {
+    if (request.nextUrl.pathname.startsWith("/profile") && user.error) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
-    if (request.nextUrl.pathname === "/" && !user.error) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+    if (request.nextUrl.pathname.startsWith("/applications") && user.error) {
+      return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
     return response;
