@@ -1,12 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import {
-  Globe,
-  FileText,
-  Plus,
-  Calendar1,
-} from "lucide-react";
+import { Globe, FileText, Plus, Calendar1 } from "lucide-react";
 import ArrowLink from "@/components/ui/arrow-link";
 import LinkButton from "@/components/ui/link-button";
 import H2 from "@/components/typography/h2";
@@ -106,10 +101,22 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                 Application Details
               </h2>
               <div className="space-y-3">
-                <ApplicationDateDisplay application={application} text="Found on" dateKey="found_at" />
-                <ApplicationDateDisplay application={application} text="Applied on" dateKey="applied_at" />
+                <ApplicationDateDisplay
+                  application={application}
+                  text="Found on"
+                  dateKey="found_at"
+                />
+                <ApplicationDateDisplay
+                  application={application}
+                  text="Applied on"
+                  dateKey="applied_at"
+                />
                 {application.rejected_at && (
-                  <ApplicationDateDisplay application={application} text="Rejected on" dateKey="rejected_at" />
+                  <ApplicationDateDisplay
+                    application={application}
+                    text="Rejected on"
+                    dateKey="rejected_at"
+                  />
                 )}
                 {application.url && (
                   <div className="flex items-center">
@@ -128,10 +135,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                 )}
               </div>
             </div>
-
-            {application.notes && (
-              <ApplicationNotes application={application} />
-            )}
+            <ApplicationNotes application={application} />
           </div>
 
           {/* Interviews Section */}
@@ -164,12 +168,21 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                 <p className="text-gray-500">No interviews scheduled yet.</p>
                 {application.status === ApplicationStatus.FOUND && (
                   <div>
-                    <p className="text-gray-500">Let's fix that by submitting an application. You got this! 🫡</p>
-                    <ArrowLink href={application.url} text="Apply Now" target="_blank" />
+                    <p className="text-gray-500">
+                      Let's fix that by submitting an application. You got this!
+                      🫡
+                    </p>
+                    <ArrowLink
+                      href={application.url}
+                      text="Apply Now"
+                      target="_blank"
+                    />
                   </div>
                 )}
                 {application.status !== ApplicationStatus.FOUND && (
-                <p className="text-gray-500">Hoping they reach out to you 🤞</p>
+                  <p className="text-gray-500">
+                    Hoping they reach out to you 🤞
+                  </p>
                 )}
               </div>
             )}
@@ -185,7 +198,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         >
           Edit Application
         </Link>
-        <DeleteApplicationButton applicationId={application.id}/>
+        <DeleteApplicationButton applicationId={application.id} />
       </div>
     </div>
   );
