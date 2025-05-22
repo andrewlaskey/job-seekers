@@ -76,6 +76,12 @@ export default async function AuthButton() {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
+          <Link href="/profile" className="cursor-pointer">
+            Profile Settings
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
           <form action={signOutAction} className="w-full">
             <button type="submit" className="w-full text-left">
               Sign out
