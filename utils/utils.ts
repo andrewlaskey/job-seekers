@@ -11,17 +11,22 @@ import { redirect } from "next/navigation";
 export function encodedRedirect(
   type: "error" | "success",
   path: string,
-  message: string,
+  message: string
 ) {
   return redirect(`${path}?${type}=${encodeURIComponent(message)}`);
 }
 
 export function formatDate(dateString: string | null) {
-  if (!dateString) return 'Not set'
-  return format(new Date(dateString), 'PPP')
+  if (!dateString) return "Not set";
+  return format(new Date(dateString), "PPP");
 }
 
 export function formatDateTime(dateString: string | null) {
-  if (!dateString) return 'Not scheduled'
-  return format(new Date(dateString), 'PPP p')
+  if (!dateString) return "Not scheduled";
+  return format(new Date(dateString), "PPP p");
+}
+
+export function formatDateShort(dateString: string | null) {
+  if (!dateString) return "Not set";
+  return format(new Date(dateString), "P");
 }

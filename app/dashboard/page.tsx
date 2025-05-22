@@ -10,6 +10,7 @@ import InterviewCard from "@/components/interviews/interview-card";
 import H2 from "@/components/typography/h2";
 import { getApplicationsWithInterviews } from "@/actions/applicationActions";
 import ApplicationSankey from "@/components/charts/application-sankey";
+import ActivityGraph from "@/components/charts/activity-graph";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -83,6 +84,8 @@ export default async function DashboardPage() {
       {applicationsWithInterviews && applicationsWithInterviews.length > 0 && (
         <ApplicationSankey applications={applicationsWithInterviews} />
       )}
+
+      <ActivityGraph applications={applicationsWithInterviews} />
 
       {/* Upcoming Interviews Section */}
       <section className="mb-12">
