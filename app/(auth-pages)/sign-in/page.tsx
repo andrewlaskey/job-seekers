@@ -1,4 +1,4 @@
-import { signInAction } from "@/app/actions";
+import { googleSignInAction, signInAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import GoogleOneTapComponent from "@/components/social/google-one-tap";
 import { SubmitButton } from "@/components/submit-button";
@@ -46,8 +46,12 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
           <FormMessage message={searchParams} />
         </div>
       </form>
-      <div className="w-full border-t-2 border-gray-300  my-8">
-        <GoogleOneTapComponent />
+      <div className="flex flex-col w-full border-t-2 border-gray-300 my-8 py-4">
+        <form className="flex-1 flex flex-col">
+          <SubmitButton pendingText="Contacting Google..." formAction={googleSignInAction}>
+            Sign in with Google
+          </SubmitButton>
+        </form>
       </div>
     </div>
   );

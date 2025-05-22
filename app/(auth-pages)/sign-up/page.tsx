@@ -1,11 +1,10 @@
-import { signUpAction } from "@/app/actions";
+import { signUpAction, googleSignInAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
-import GoogleOneTapComponent from "@/components/social/google-one-tap";
 
 export default async function Signup(props: {
   searchParams: Promise<Message>;
@@ -47,8 +46,12 @@ export default async function Signup(props: {
         </div>
       </form>
       <SmtpMessage />
-      <div className="w-full border-t-2 border-gray-300  my-8">
-        <GoogleOneTapComponent />
+      <div className="flex flex-col w-full border-t-2 border-gray-300 my-8 py-4">
+        <form className="flex-1 flex flex-col">
+          <SubmitButton pendingText="Contacting Google..." formAction={googleSignInAction}>
+            Sign in with Google
+          </SubmitButton>
+        </form>
       </div>
     </div>
   );
