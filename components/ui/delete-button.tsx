@@ -54,7 +54,7 @@ export default function DeleteButton({
           variant="destructive"
           onClick={handleDelete}
           disabled={isDeleting}
-          className="flex items-center"
+          className="flex w-full sm:w-auto items-center"
         >
           <Trash className="h-4 w-4 mr-2" />
           {text}

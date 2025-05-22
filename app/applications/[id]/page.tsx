@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Globe, FileText, Plus, Calendar1 } from "lucide-react";
+import { Globe, FileText, Plus, Calendar1, PencilRuler } from "lucide-react";
 import ArrowLink from "@/components/ui/arrow-link";
 import LinkButton from "@/components/ui/link-button";
 import H2 from "@/components/typography/h2";
@@ -77,7 +77,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Header */}
         <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col-reverse sm:flex-row gap-4 justify-between items-start">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
                 {application.title || "Untitled Position"}
@@ -140,7 +140,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
 
           {/* Interviews Section */}
           <div className="mt-8">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-col mb-4 gap-4 md:flex-row md:items-center md:justify-between ">
               <div className="flex items-center">
                 <Calendar1 className="h-6 w-6 text-old_rose mr-2" />
                 <H2>Interviews</H2>
@@ -191,11 +191,12 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
       </div>
 
       {/* Actions */}
-      <div className="mt-6 flex gap-4">
+      <div className="mt-6 flex flex-col sm:flex-row gap-4">
         <Link
           href={`/applications/${application.id}/edit`}
-          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+          className="flex items-center justify-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
         >
+          <PencilRuler className="h-4 w-4 mr-2" />
           Edit Application
         </Link>
         <DeleteApplicationButton applicationId={application.id} />

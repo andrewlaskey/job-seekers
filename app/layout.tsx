@@ -48,7 +48,7 @@ export default function RootLayout({
                 </div>
               </nav>
               <div className="flex flex-col gap-10 w-full">
-                <div className="w-full max-w-5xl mx-auto px-5">{children}</div>
+                <div className="w-full max-w-5xl mx-auto px-2 sm:px-5">{children}</div>
               </div>
 
               <GlobalFooter />

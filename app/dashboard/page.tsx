@@ -78,7 +78,7 @@ export default async function DashboardPage() {
   const foundApps = foundListings || [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Dashboard</h1>
 
       {applicationsWithInterviews && applicationsWithInterviews.length > 0 && (
@@ -90,7 +90,7 @@ export default async function DashboardPage() {
       {/* Upcoming Interviews Section */}
       <section className="mb-12">
         <div className="bg-white shadow rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col mb-4 gap-4 md:flex-row md:items-center md:justify-between ">
             <div className="flex items-center">
               <CalendarDays className="h-6 w-6 text-old_rose mr-2" />
               <H2>Upcoming Interviews</H2>
@@ -126,7 +126,7 @@ export default async function DashboardPage() {
       {/* Found Job Listings Section */}
       <section className="mb-12">
         <div className="bg-white shadow rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col mb-4 gap-4 md:flex-row md:items-center md:justify-between ">
             <div className="flex items-center">
               <Briefcase className="h-6 w-6 text-old_rose mr-2" />
               <H2>Found Job Listings</H2>
@@ -165,7 +165,7 @@ export default async function DashboardPage() {
       {/* Active Applications Section */}
       <section>
         <div className="bg-white shadow rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col mb-4 gap-4 md:flex-row md:items-center md:justify-between ">
             <div className="flex items-center">
               <FileText className="h-6 w-6 text-old_rose mr-2" />
               <H2>Active Applications</H2>
