@@ -29,7 +29,6 @@ export default function DateUpdateButton({
 
     setIsUpdating(true);
     try {
-      // Convert to ISO string for database storage (will be in UTC)
       const { error } = await asyncUpdateFn(date.toISOString());
 
       if (error) {
@@ -53,7 +52,6 @@ export default function DateUpdateButton({
       return;
     }
     
-    // Create date from local datetime input and store as temp
     const date = createDateFromLocalInput(value);
     setTempDate(date);
   };
@@ -71,7 +69,6 @@ export default function DateUpdateButton({
 
   const handleOpenPicker = () => {
     setIsDatePickerOpen(true);
-    // Initialize temp date with current selected date
     setTempDate(selectedDate);
   };
 
@@ -91,7 +88,6 @@ export default function DateUpdateButton({
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
             <h3 className="text-lg font-semibold mb-4">Select New Date</h3>
             
-            {/* Show current value in local time for reference */}
             {selectedDate && (
               <div className="text-sm text-gray-600 mb-2">
                 <strong>Current:</strong> {format(selectedDate, "PPpp")}
@@ -108,7 +104,6 @@ export default function DateUpdateButton({
               disabled={isUpdating}
             />
             
-            {/* Show preview of new date if different from current */}
             {tempDate && tempDate.getTime() !== selectedDate?.getTime() && (
               <div className="text-sm text-blue-600 mt-2">
                 <strong>New:</strong> {format(tempDate, "PPpp")}
