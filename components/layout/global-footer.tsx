@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function GlobalFooter() {
   return (
-    <footer className="w-full max-w-5xl flex items-start justify-between border-t mx-auto text-left text-xs gap-8 py-16">
+    <footer className="w-full max-w-5xl flex items-start justify-between border-t mx-auto text-left text-xs gap-8 py-16 px-5">
       <div className="flex flex-col items-start gap-4">
         <Link href="/privacy">Privacy Policy & Terms</Link>
         <div className="flex flex-col gap-2 max-w-80">

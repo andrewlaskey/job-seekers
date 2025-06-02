@@ -218,7 +218,7 @@ export default function ApplicationSankey({
     })();
 
     if (nodeValue === 0) {
-        return (<></>)
+      return <></>;
     }
 
     return (
@@ -257,19 +257,39 @@ export default function ApplicationSankey({
 
   return (
     <div className="w-full p-4 relative">
-      <ResponsiveContainer width="100%" height={360}>
-        <Sankey
-          data={sankeyData}
-          nodeWidth={20}
-          nodePadding={60}
-          margin={{ top: 10, right: 100, bottom: 10, left: 30 }}
-          link={{
-            stroke: "#d0d0d0",
-            strokeOpacity: 0.5,
-          }}
-          node={<CustomNode />}
-        />
-      </ResponsiveContainer>
+      <div className="md:block hidden">
+        <ResponsiveContainer width="100%" height={360}>
+          <Sankey
+            data={sankeyData}
+            nodeWidth={20}
+            nodePadding={60}
+            margin={{ top: 10, right: 100, bottom: 10, left: 30 }}
+            link={{
+              stroke: "#d0d0d0",
+              strokeOpacity: 0.5,
+            }}
+            node={<CustomNode />}
+          />
+        </ResponsiveContainer>
+      </div>
+
+      <div className="md:hidden block h-[900px]">
+        <div className="transform rotate-90 origin-center">
+          <Sankey
+            width={900}
+            height={360}
+            data={sankeyData}
+            nodeWidth={20}
+            nodePadding={60}
+            margin={{ top: 10, right: 100, bottom: 10, left: 30 }}
+            link={{
+              stroke: "#d0d0d0",
+              strokeOpacity: 0.5,
+            }}
+            node={<CustomNode />}
+          />
+          </div>
+      </div>
     </div>
   );
 }

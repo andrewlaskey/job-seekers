@@ -1,4 +1,5 @@
 import Hero from "@/components/hero";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
@@ -17,6 +18,12 @@ export default async function Home() {
             Sign Up
           </Link>
         </div>
+        <Image
+          src="/dashboard-screenshot.png"
+          alt="Sankey diagram and activity graphs show your job hunt progress"
+          width={970}
+          height={640}
+        />
       </main>
     </>
   );
