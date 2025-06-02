@@ -18,6 +18,9 @@ export default function Header() {
     "exhausting",
     "lonely",
     "stressful",
+    "tiring",
+    "demoralizing",
+    "overwhelming"
   ];
 
   const getNewAdjective = () => {

@@ -2,8 +2,8 @@
 
 import { Application } from "@/types/applications.types";
 import DateUpdateButton from "../ui/date-update-button";
-import { formatDate } from "@/utils/utils";
 import { updateDate } from "@/actions/applicationActions";
+import DateDisplay from "../ui/date-display";
 
 interface ApplicationDateDisplayProps {
   text: string;
@@ -31,7 +31,7 @@ export default function ApplicationDateDisplay({
       <div>
         <p className="text-sm text-gray-500">{text}</p>
         <p className="font-medium text-gray-900">
-          {formatDate(application[dateKey])}
+          <DateDisplay dateString={application[dateKey]} formatString="PPP" />
         </p>
       </div>
     </div>

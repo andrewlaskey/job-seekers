@@ -3,6 +3,8 @@
 import { Calendar } from "lucide-react";
 import { useState } from "react";
 import { format } from "date-fns";
+import { createDateFromLocalInput, formatForDateTimeLocal } from "@/utils/utils";
+import { Button } from "@/components/ui/button";
 
 interface DateUpdateButtonProps {
   currentDate: string | null;
@@ -19,6 +21,7 @@ export default function DateUpdateButton({
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     currentDate ? new Date(currentDate) : null
   );
+  const [tempDate, setTempDate] = useState<Date | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleDateChange = async (date: Date | null) => {
@@ -26,24 +29,56 @@ export default function DateUpdateButton({
 
     setIsUpdating(true);
     try {
+      // Convert to ISO string for database storage (will be in UTC)
       const { error } = await asyncUpdateFn(date.toISOString());
 
       if (error) {
-        console.error("Failed to update interview date:", error);
+        console.error("Failed to update date:", error);
       } else {
         setSelectedDate(date);
         setIsDatePickerOpen(false);
+        setTempDate(null);
       }
     } catch (error) {
-      console.error("Error updating interview date:", error);
+      console.error("Error updating date:", error);
     } finally {
       setIsUpdating(false);
     }
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (!value) {
+      setTempDate(null);
+      return;
+    }
+    
+    // Create date from local datetime input and store as temp
+    const date = createDateFromLocalInput(value);
+    setTempDate(date);
+  };
+
+  const handleConfirm = () => {
+    if (tempDate) {
+      handleDateChange(tempDate);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsDatePickerOpen(false);
+    setTempDate(null);
+  };
+
+  const handleOpenPicker = () => {
+    setIsDatePickerOpen(true);
+    // Initialize temp date with current selected date
+    setTempDate(selectedDate);
+  };
+
   return (
     <div>
       <button
-        onClick={() => setIsDatePickerOpen(true)}
+        onClick={handleOpenPicker}
         className="p-1 hover:bg-gray-100 rounded-full transition-colors"
         aria-label="change date"
         disabled={isUpdating}
@@ -55,31 +90,46 @@ export default function DateUpdateButton({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
             <h3 className="text-lg font-semibold mb-4">Select New Date</h3>
+            
+            {/* Show current value in local time for reference */}
+            {selectedDate && (
+              <div className="text-sm text-gray-600 mb-2">
+                <strong>Current:</strong> {format(selectedDate, "PPpp")}
+              </div>
+            )}
+            
             <input
               type="datetime-local"
               defaultValue={
-                selectedDate ? format(selectedDate, "yyyy-MM-dd'T'HH:mm") : ""
+                selectedDate ? formatForDateTimeLocal(selectedDate) : ""
               }
-              onChange={(e) => {
-                const date = e.target.value ? new Date(e.target.value) : null;
-                handleDateChange(date);
-              }}
+              onChange={handleInputChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               disabled={isUpdating}
             />
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                onClick={() => setIsDatePickerOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            
+            {/* Show preview of new date if different from current */}
+            {tempDate && tempDate.getTime() !== selectedDate?.getTime() && (
+              <div className="text-sm text-blue-600 mt-2">
+                <strong>New:</strong> {format(tempDate, "PPpp")}
+              </div>
+            )}
+            
+            <div className="mt-6 flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={handleCancel}
                 disabled={isUpdating}
               >
                 Cancel
-              </button>
-              {isUpdating && (
-                <span className="px-4 py-2 text-sm font-medium text-gray-500">
-                  Updating...
-                </span>
-              )}
+              </Button>
+              
+              <Button
+                onClick={handleConfirm}
+                disabled={isUpdating || !tempDate}
+              >
+                {isUpdating ? "Updating..." : "Confirm"}
+              </Button>
             </div>
           </div>
         </div>

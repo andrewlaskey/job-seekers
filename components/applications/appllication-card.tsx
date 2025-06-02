@@ -1,11 +1,8 @@
 import { Application, ApplicationStatus } from "@/types/applications.types";
 import { Building2 } from "lucide-react";
-import ApplicationStatusBadge from "./application-status";
-import Link from "next/link";
-import { Button } from "../ui/button";
 import ArrowLink from "../ui/arrow-link";
-import { formatDate } from "@/utils/utils";
 import UpdateStatusButton from "./update-status-button";
+import DateDisplay from "../ui/date-display";
 
 export interface ApplicationDetailProps {
   application: Application;
@@ -29,7 +26,7 @@ export default function ApplicationCard({
           <div className="flex items-center mt-2">
             <UpdateStatusButton applicationId={application.id} currentStatus={application.status} />
             <span className="ml-2 text-sm text-gray-500">
-              Applied: {formatDate(application.applied_at)}
+              Applied: <DateDisplay dateString={application.applied_at} formatString="PPP" />
             </span>
           </div>
         </div>

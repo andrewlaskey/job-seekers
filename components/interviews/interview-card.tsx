@@ -1,13 +1,13 @@
 "use client";
 
 import { InterviewJoinApplications } from "@/types/applications.types";
-import { formatDateTime } from "@/utils/utils";
 import ArrowLink from "../ui/arrow-link";
 import { Check, X } from "lucide-react";
 import { useState } from "react";
 import { rescheduleInterview, cancelInterview } from "@/actions/interviewActions";
 import DateUpdateButton from "../ui/date-update-button";
 import InterviewNotes from "./interview-notes";
+import DateDisplay from "../ui/date-display";
 
 export interface InterviewCardProps {
   interview: InterviewJoinApplications;
@@ -61,12 +61,12 @@ export default function InterviewCard({
           <div className="flex items-center gap-2">
             {isAltVersion && (
               <p className="text-lg font-semibold text-gray-600">
-                {formatDateTime(interview.scheduled_at)}
+                <DateDisplay dateString={interview.scheduled_at} formatString="PPP p" />
               </p>
             )}
             {!isAltVersion && (
               <p className="text-sm text-gray-600">
-                {formatDateTime(interview.scheduled_at)}
+                <DateDisplay dateString={interview.scheduled_at} formatString="PPP p" />
               </p>
             )}
             <DateUpdateButton currentDate={interview.scheduled_at} asyncUpdateFn={(date) => dateChange(date)} />

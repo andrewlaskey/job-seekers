@@ -79,7 +79,7 @@ export async function rescheduleInterview(id: number, dateString: string) {
   }
 
   const updateData = {
-    scheduled_at: dateString,
+    scheduled_at: new Date(dateString).toISOString(),
   };
 
   const { data, error } = await supabase
