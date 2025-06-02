@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import LinkButton from "@/components/ui/link-button";
 import { FileText, Plus } from "lucide-react";
 import ApplicationCard from "@/components/applications/appllication-card";
+import ApplicationList from "@/components/applications/application-list";
 
 export default async function ApplicationsPage() {
   const supabase = await createClient();
@@ -45,21 +46,7 @@ export default async function ApplicationsPage() {
         </LinkButton>
       </div>
 
-        {applications && applications.length > 0 ? (
-          <div className="bg-white shadow overflow-hidden sm:rounded-md">
-          <div className="space-y-4 p-4">
-              {applications.map((application) => (
-                <ApplicationCard application={application} key={application.id} />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="text-center py-12">
-          <p className="text-lg text-gray-600 mb-4">
-            It's tough out there, but you got this!
-          </p>
-        </div>
-        )}
+        <ApplicationList applications={applications} />
       </div>
   );
 }

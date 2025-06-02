@@ -10,7 +10,7 @@ import {
 import { ApplicationUpdate } from "@/types/applications.types";
 import { revalidatePath } from "next/cache";
 
-export async function getApplications() {
+export async function getApplications(): Promise<{ data?: Application[], error?: string }> {
   const supabase = await createClient();
 
   // Check if user is authenticated
