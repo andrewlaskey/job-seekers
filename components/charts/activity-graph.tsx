@@ -16,7 +16,7 @@ function generateLast90DaysMap(): Map<string, ActivityCounter> {
   const today = new Date();
   const startDay = subDays(today, 90);
 
-  for (let i = 0; i < 90; i++) {
+  for (let i = 1; i <= 90; i++) {
     const date = addDays(startDay, i);
     const dateString = format(date, "MM/dd/yyyy");
     result.set(dateString, { interviews: 0, applications: 0 });

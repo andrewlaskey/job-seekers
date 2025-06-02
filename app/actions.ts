@@ -137,12 +137,16 @@ export const signOutAction = async () => {
 
 export const googleSignInAction = async () => {
   const supabase = await createClient();
-  const origin = (await headers()).get("origin");
+   const headersList = await headers();
+  const origin = headersList.get("origin");
+  
+  
+  const redirectUrl = `${origin}/auth/callback`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${origin}/auth/callback`,
+      redirectTo: redirectUrl,
       scopes: 'email profile',
       queryParams: {
         access_type: 'offline',

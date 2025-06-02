@@ -28,7 +28,7 @@ export default async function InterviewsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col mb-4 gap-4 md:flex-row md:items-center md:justify-between ">
         <div className="flex items-center">
           <Calendar1 className="h-6 w-6 text-old_rose mr-2" />
           <h1 className="text-2xl font-bold">Interviews</h1>
