@@ -24,16 +24,37 @@ export default function ApplicationCard({
             {application.company}
           </div>
           <div className="flex items-center mt-2">
-            <UpdateStatusButton applicationId={application.id} currentStatus={application.status} />
-            <span className="ml-2 text-sm text-gray-500">
-              Applied: <DateDisplay dateString={application.applied_at} formatString="PPP" />
-            </span>
+            <UpdateStatusButton
+              applicationId={application.id}
+              currentStatus={application.status}
+            />
+            {application.status === ApplicationStatus.FOUND ? (
+              <span className="ml-2 text-sm text-gray-500">
+                Found:{" "}
+                <DateDisplay
+                  dateString={application.found_at}
+                  formatString="PPP"
+                />
+              </span>
+            ) : (
+              <span className="ml-2 text-sm text-gray-500">
+                Applied:{" "}
+                <DateDisplay
+                  dateString={application.applied_at}
+                  formatString="PPP"
+                />
+              </span>
+            )}
           </div>
         </div>
         <div className="flex flex-col space-y-2">
           {application.status === ApplicationStatus.FOUND &&
             application.url && (
-              <ArrowLink href={application.url} text="Apply Now" target="_blank"/>
+              <ArrowLink
+                href={application.url}
+                text="Apply Now"
+                target="_blank"
+              />
             )}
           <ArrowLink
             href={`/applications/${application.id}`}
