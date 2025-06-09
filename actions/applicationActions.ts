@@ -160,6 +160,8 @@ export async function updateApplication(
         company: formData.company,
         url: formData.url,
         notes: formData.notes,
+        interest: formData.interest,
+        alignment: formData.alignment
       })
       .eq("id", id)
       .eq("user_id", user.id);

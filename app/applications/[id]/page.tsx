@@ -1,7 +1,15 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Globe, FileText, Plus, Calendar1, PencilRuler } from "lucide-react";
+import {
+  Globe,
+  FileText,
+  Plus,
+  Calendar1,
+  PencilRuler,
+  Heart,
+  Blend,
+} from "lucide-react";
 import ArrowLink from "@/components/ui/arrow-link";
 import LinkButton from "@/components/ui/link-button";
 import H2 from "@/components/typography/h2";
@@ -119,10 +127,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                   />
                 )}
                 {application.url && (
-                  <div className="flex items-center">
+                  <div className="flex items-center ">
                     <Globe className="w-5 h-5 text-gray-400 mr-3" />
                     <div>
-                      <p className="text-sm text-gray-500">Job Posting</p>
                       <Link
                         href={application.url}
                         target="_blank"
@@ -133,6 +140,24 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                     </div>
                   </div>
                 )}
+                <dl className="flex items-center gap-6 text-sm">
+                  <div className="flex items-center">
+                    <Heart
+                      className="w-5 h-5 text-gray-400 mr-3"
+                      aria-hidden="true"
+                    />
+                    <dt className="sr-only">Interest level</dt>
+                    <dd className="font-medium">{application.interest}</dd>
+                  </div>
+                  <div className="flex items-center">
+                    <Blend
+                      className="w-5 h-5 text-gray-400 mr-3"
+                      aria-hidden="true"
+                    />
+                    <dt className="sr-only">Alignment score</dt>
+                    <dd className="font-medium">{application.alignment}</dd>
+                  </div>
+                </dl>
               </div>
             </div>
             <ApplicationNotes application={application} />

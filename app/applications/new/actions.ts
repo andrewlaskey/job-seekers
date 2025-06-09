@@ -1,7 +1,7 @@
 'use server';
 
 import { ApplicationStatus } from '@/types/applications.types';
-import { ApplicationInsertFormData, ApplicationUpdate } from '@/types/applications.types';
+import { ApplicationInsertFormData } from '@/types/applications.types';
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
@@ -30,6 +30,8 @@ export async function createApplication(formData: ApplicationInsertFormData) {
       notes: formData.notes || null,
       status: ApplicationStatus.FOUND,
       user_id: user.id,
+      interest: formData.interest,
+      alignment: formData.alignment
       // created_at and found_at will use their default values (now())
       // Other timestamp fields will be null by default
     })

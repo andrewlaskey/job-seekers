@@ -24,6 +24,8 @@ export default function EditApplicationPage() {
     company: "",
     url: "",
     notes: "",
+    interest: 0,
+    alignment: 0,
   });
 
   useEffect(() => {
@@ -44,6 +46,8 @@ export default function EditApplicationPage() {
           company: application.company || "",
           url: application.url || "",
           notes: application.notes || "",
+          interest: application.interest,
+          alignment: application.alignment
         });
       } catch (err) {
         setError((err as Error).message);
@@ -181,6 +185,56 @@ export default function EditApplicationPage() {
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
                 placeholder="https://example.com/jobs/123"
+              />
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center">
+                <label
+                  htmlFor="interest"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Interest
+                </label>
+                <span className="text-sm font-bold text-gray-700">
+                  {formData.interest}
+                </span>
+              </div>
+              <input
+                type="range"
+                name="interest"
+                id="interest"
+                value={formData.interest}
+                min={0}
+                max={5}
+                step={1}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 appearance-none bg-transparent slider"
+              />
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center">
+                <label
+                  htmlFor="alignment"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Alignment
+                </label>
+                <span className="text-sm font-bold text-gray-700">
+                  {formData.alignment}
+                </span>
+              </div>
+              <input
+                type="range"
+                name="alignment"
+                id="alignment"
+                value={formData.alignment}
+                min={0}
+                max={5}
+                step={1}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 appearance-none bg-transparent slider"
               />
             </div>
 

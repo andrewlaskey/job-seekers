@@ -1,5 +1,5 @@
 import { Application, ApplicationStatus } from "@/types/applications.types";
-import { Building2 } from "lucide-react";
+import { Blend, Building2, Heart } from "lucide-react";
 import ArrowLink from "../ui/arrow-link";
 import UpdateStatusButton from "./update-status-button";
 import DateDisplay from "../ui/date-display";
@@ -47,7 +47,8 @@ export default function ApplicationCard({
             )}
           </div>
         </div>
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col justify-between items-end h-full min-h-[80px]">
+          <div className="flex flex-col items-end space-y-2">
           {application.status === ApplicationStatus.FOUND &&
             application.url && (
               <ArrowLink
@@ -60,6 +61,25 @@ export default function ApplicationCard({
             href={`/applications/${application.id}`}
             text="View Details"
           />
+          </div>
+          <dl className="flex items-center gap-6 text-sm mt-auto">
+            <div className="flex flex-end items-center">
+              <Heart
+                className="w-4 h-4 text-gray-400 mr-2"
+                aria-hidden="true"
+              />
+              <dt className="sr-only">Interest level</dt>
+              <dd className="font-medium">{application.interest}</dd>
+            </div>
+            <div className="flex items-center">
+              <Blend
+                className="w-4 h-4 text-gray-400 mr-2"
+                aria-hidden="true"
+              />
+              <dt className="sr-only">Alignment score</dt>
+              <dd className="font-medium">{application.alignment}</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </div>
