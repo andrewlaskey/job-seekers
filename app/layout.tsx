@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
 import GlobalFooter from "@/components/layout/global-footer";
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -14,7 +15,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Job Seeker",
+  title: "Job Seekers",
   description: "Stay organized applying for work",
 };
 
@@ -56,6 +57,7 @@ export default function RootLayout({
           </main>
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId="G-WKN923W9VE" />
     </html>
   );
 }
