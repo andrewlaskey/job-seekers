@@ -9,8 +9,9 @@ import ArrowLink from "@/components/ui/arrow-link";
 import InterviewCard from "@/components/interviews/interview-card";
 import H2 from "@/components/typography/h2";
 import { getApplicationsWithInterviews } from "@/actions/applicationActions";
-import ApplicationSankey from "@/components/charts/application-sankey";
 import ActivityGraph from "@/components/charts/activity-graph";
+import ChartCarousel from "@/components/charts/chart-carousel";
+
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -82,7 +83,7 @@ export default async function DashboardPage() {
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Dashboard</h1>
 
       {applicationsWithInterviews && applicationsWithInterviews.length > 0 && (
-        <ApplicationSankey applications={applicationsWithInterviews} />
+        <ChartCarousel applications={applicationsWithInterviews} />
       )}
 
       <ActivityGraph applications={applicationsWithInterviews} />
