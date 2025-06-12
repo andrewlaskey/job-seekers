@@ -175,7 +175,7 @@ export default function EditApplicationPage() {
                 htmlFor="url"
                 className="block text-sm font-medium text-gray-700"
               >
-                Job URL
+                Job Board Listing URL
               </label>
               <input
                 type="url"
