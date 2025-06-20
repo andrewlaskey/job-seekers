@@ -11,6 +11,7 @@ import H2 from "@/components/typography/h2";
 import { getApplicationsWithInterviews } from "@/actions/applicationActions";
 import ActivityGraph from "@/components/charts/activity-graph";
 import ChartCarousel from "@/components/charts/chart-carousel";
+import ApplicationEncouragementText from "@/components/application-encouragement";
 
 
 export default async function DashboardPage() {
@@ -178,6 +179,8 @@ export default async function DashboardPage() {
           </div>
 
           {activeApps.length > 0 ? (
+            <>
+            {applicationsWithInterviews && (<ApplicationEncouragementText applications={applicationsWithInterviews} />)}
             <div className="space-y-4">
               {activeApps.map((application) => (
                 <ApplicationCard
@@ -186,6 +189,7 @@ export default async function DashboardPage() {
                 />
               ))}
             </div>
+            </>
           ) : (
             <div className="text-center py-6">
               <p className="text-lg text-gray-600 mb-4">
